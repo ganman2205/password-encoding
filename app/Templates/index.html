@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Encoder/Decoder</title>
+</head>
+<body>
+    <h1>Password Encoder/Decoder</h1>
+    
+    <form id="password-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="button" onclick="submitPassword()">Submit</button>
+        <button type="button" onclick="retrievePassword()">Retrieve</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function submitPassword() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/api/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Password Submitted! `;
+            });
+        }
+
+        function retrievePassword() {
+            const username = document.getElementById('username').value;
+
+            fetch('/api/retrieve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Retrieved Data: Encoded Password: ${data.encoded_password}, Decoded Password: ${data.decoded_password}`;
+            });
+        }
+    </script>
+</body>
+</html>
