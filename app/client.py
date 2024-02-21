@@ -1,4 +1,3 @@
-# client.py
 import requests
 
 def main():
